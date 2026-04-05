@@ -1,5 +1,6 @@
 import type { FretboardDimensionsProps } from 
 "../types/FreatboardDimensionsProps";
+import calculateEqualTemperamentDistance from "../utils/calculateEqualTemperamentDistance";
 
 export default function Frets(props: FretboardDimensionsProps) {
   const { startY, startX, endY, endX } = props;
@@ -8,12 +9,8 @@ export default function Frets(props: FretboardDimensionsProps) {
   const frets = Array.from({ length: 12 }, (_, i) => {
     const n = i + 1;
 
-    const raw = 1 - Math.pow(2, -n / 12);
-    const lastRaw = 1 - Math.pow(2, -12 / 12);
+    const equalTemperament = calculateEqualTemperamentDistance(n, startX, scaleLength);
 
-    const equalTemperament = startX + (raw / lastRaw) * scaleLength;
-
-    
     return (
       <line
         key={n}
@@ -30,16 +27,16 @@ export default function Frets(props: FretboardDimensionsProps) {
   const fretZero = (
     <line
       x1={startX}
-      y1={startY}
+      y1={startY-0.5}
       x2={startX}
-      y2={endY}
+      y2={endY+0.5}
       stroke="black" 
-      strokeWidth="5`"
+      strokeWidth="5"
     />
   )
 
   return (
-    <g>
+    <g className="frets">
       {fretZero}
       {frets}
     </g>

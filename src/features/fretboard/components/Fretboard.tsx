@@ -1,13 +1,14 @@
 import type { FretboardDimensionsProps } from "..//types/FreatboardDimensionsProps";
 import Frets from "./Frets";
+import Notes from "./Notes";
 import Strings from "./Strings";
 
 export default function Fretboard({
   width, height } 
   : { width: number, height: number }) {
 
-  const paddingX = 25;
-  const paddingY = 15;
+  const paddingX = 30;
+  const paddingY = 18;
 
   const childrenDimensions : FretboardDimensionsProps = {
     startX: paddingX,
@@ -17,10 +18,11 @@ export default function Fretboard({
   };
   
   return (
-    <g style={{
+    <g className="fretboard" style={{
     }}>
       <Strings {...childrenDimensions} />
       <Frets {...childrenDimensions} />
+      <Notes {...childrenDimensions} />
     </g>
   );
 }
