@@ -1,4 +1,4 @@
-import type { FretboardDimensionsProps } from "../../types/fretboard/FreatboardDimensionsProps";
+import type { FretboardDimensionsProps } from "..//types/FreatboardDimensionsProps";
 import Frets from "./Frets";
 import Strings from "./Strings";
 

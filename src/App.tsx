@@ -1,4 +1,4 @@
-import FretboardWrapper from "./components/fretboard/FretboardWrapper"
+import FretboardWrapper from "./features/fretboard/components/FretboardWrapper"
 
 function App() {
   return (

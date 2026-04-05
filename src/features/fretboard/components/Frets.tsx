@@ -1,4 +1,5 @@
-import type { FretboardDimensionsProps } from "../../types/fretboard/FreatboardDimensionsProps";
+import type { FretboardDimensionsProps } from 
+"../types/FreatboardDimensionsProps";
 
 export default function Frets(props: FretboardDimensionsProps) {
   const { startY, startX, endY, endX } = props;
