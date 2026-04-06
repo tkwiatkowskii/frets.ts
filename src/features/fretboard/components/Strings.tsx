@@ -1,6 +1,6 @@
 import type { FretboardDimensionsProps } from "../types/FreatboardDimensionsProps";
 
-export default function Strings(props: FretboardDimensionsProps) {
+function Strings(props: FretboardDimensionsProps) {
   const { startX, startY, endX, endY } = props;
   const scale = (endY - startY) / 5;
   const strings = Array.from({ length: 6 }, (_, i) => {
@@ -22,3 +22,5 @@ export default function Strings(props: FretboardDimensionsProps) {
     </g>
   );
 };
+
+export default Strings;

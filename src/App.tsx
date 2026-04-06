@@ -1,15 +1,12 @@
-import FretboardWrapper from "./features/fretboard/components/FretboardWrapper"
+import MainContent from "./layout/components/MainContent"
 
 function App() {
   return (
-    <div style={{
+    <div className="layout" style={{
       width: '100vw',
       height: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
     }}>
-      <FretboardWrapper />
+      <MainContent />
     </div>
   )
 }

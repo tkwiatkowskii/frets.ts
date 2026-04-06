@@ -1,16 +1,22 @@
+import FretboardSettingsWrapper from "../../fretboard-setttings/components/FretboardSettingsWrapper";
 import Fretboard from "./Fretboard";
 
-export default function FretboardWrapper() {
+function FretboardWrapper() {
   const width = 1000;
   const height = 275;
 
   return (
-    <svg className="fretboard-wrapper" viewBox={`0 0 ${width} ${height}`} style={{
-      backgroundColor: '#ece6e696',
-      width: '80%',
-      margin: '0 auto',
-    }}>
-      <Fretboard width={width} height={height} />
-    </svg>
+    <div className="fretboard-wrapper flex gap-5 items-center justify-center w-screen">
+
+      <svg className="fretboard-svg" viewBox={`0 0 ${width} ${height}`} style={{
+        backgroundColor: '#ece6e696',
+        width: '80%',
+      }}>
+        <Fretboard width={width} height={height} />
+      </svg>
+      <FretboardSettingsWrapper />
+    </div>
   );
 }
+
+export default FretboardWrapper;

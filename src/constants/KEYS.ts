@@ -1,159 +1,196 @@
 import type { KeySystem } from "../types/Keys";
 
-const keys: KeySystem = {
+const KEYS: KeySystem = {
   major: {
     C: {
       notes: ["C", "D", "E", "F", "G", "A", "B"],
-      accidental: "natural"
+      accidental: "natural",
+    },
+
+    "E#": {
+      notes: ["E#", "F##", "G##", "A#", "B#", "C##", "D##"],
+      accidental: "sharp",
+    },
+
+    "Fb": {
+      notes: ["Fb", "Gb", "Ab", "Bbb", "Cb", "Db", "Eb"],
+      accidental: "flat",
+    },
+
+    "B#": {
+      notes: ["B#", "C##", "D##", "E#", "F##", "G##", "A##"],
+      accidental: "sharp",
     },
 
     "C#": {
       notes: ["C#", "D#", "E#", "F#", "G#", "A#", "B#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Db: {
       notes: ["Db", "Eb", "F", "Gb", "Ab", "Bb", "C"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     D: {
       notes: ["D", "E", "F#", "G", "A", "B", "C#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     "D#": {
       notes: ["D#", "E#", "F##", "G#", "A#", "B#", "C##"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Eb: {
       notes: ["Eb", "F", "G", "Ab", "Bb", "C", "D"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     E: {
       notes: ["E", "F#", "G#", "A", "B", "C#", "D#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
 
     F: {
       notes: ["F", "G", "A", "Bb", "C", "D", "E"],
-      accidental: "flat"
+      accidental: "flat",
     },
     "F#": {
       notes: ["F#", "G#", "A#", "B", "C#", "D#", "E#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Gb: {
       notes: ["Gb", "Ab", "Bb", "Cb", "Db", "Eb", "F"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     G: {
       notes: ["G", "A", "B", "C", "D", "E", "F#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     "G#": {
       notes: ["G#", "A#", "B#", "C#", "D#", "E#", "F##"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Ab: {
       notes: ["Ab", "Bb", "C", "Db", "Eb", "F", "G"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     A: {
       notes: ["A", "B", "C#", "D", "E", "F#", "G#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     "A#": {
       notes: ["A#", "B#", "C##", "D#", "E#", "F##", "G##"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Bb: {
       notes: ["Bb", "C", "D", "Eb", "F", "G", "A"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     B: {
       notes: ["B", "C#", "D#", "E", "F#", "G#", "A#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Cb: {
       notes: ["Cb", "Db", "Eb", "Fb", "Gb", "Ab", "Bb"],
-      accidental: "flat"
+      accidental: "flat",
     },
   },
 
   minor: {
     A: {
       notes: ["A", "B", "C", "D", "E", "F", "G"],
-      accidental: "natural"
+      accidental: "natural",
     },
+
+    "E#": {
+      notes: ["E#", "F##", "G#", "A#", "B#", "C#", "D#"],
+      accidental: "sharp",
+    },
+
+    "Fb": {
+      notes: ["Fb", "Gb", "Abb", "Bbb", "Cb", "Dbb", "Ebb"],
+      accidental: "flat",
+    },
+
+    "B#": {
+      notes: ["B#", "C##", "D#", "E#", "F##", "G#", "A#"],
+      accidental: "sharp",
+    },
+
     "A#": {
       notes: ["A#", "B#", "C#", "D#", "E#", "F#", "G#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Bb: {
       notes: ["Bb", "C", "Db", "Eb", "F", "Gb", "Ab"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     B: {
       notes: ["B", "C#", "D", "E", "F#", "G", "A"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     C: {
       notes: ["C", "D", "Eb", "F", "G", "Ab", "Bb"],
-      accidental: "flat"
+      accidental: "flat",
     },
     "C#": {
       notes: ["C#", "D#", "E", "F#", "G#", "A", "B"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
 
     D: {
       notes: ["D", "E", "F", "G", "A", "Bb", "C"],
-      accidental: "flat"
+      accidental: "flat",
     },
     "D#": {
       notes: ["D#", "E#", "F#", "G#", "A#", "B", "C#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
+
+    "Db": {
+      notes: ["Db", "Eb", "E", "Gb", "Ab", "A", "Bb"],
+      accidental: "flat",
+    },
+
     Eb: {
       notes: ["Eb", "F", "Gb", "Ab", "Bb", "Cb", "Db"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     E: {
       notes: ["E", "F#", "G", "A", "B", "C", "D"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
 
     F: {
       notes: ["F", "G", "Ab", "Bb", "C", "Db", "Eb"],
-      accidental: "flat"
+      accidental: "flat",
     },
     "F#": {
       notes: ["F#", "G#", "A", "B", "C#", "D", "E"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Gb: {
       notes: ["Gb", "Ab", "Bbb", "Cb", "Db", "Ebb", "Fb"],
-      accidental: "flat"
+      accidental: "flat",
     },
 
     G: {
       notes: ["G", "A", "Bb", "C", "D", "Eb", "F"],
-      accidental: "flat"
+      accidental: "flat",
     },
     "G#": {
       notes: ["G#", "A#", "B", "C#", "D#", "E", "F#"],
-      accidental: "sharp"
+      accidental: "sharp",
     },
     Ab: {
       notes: ["Ab", "Bb", "Cb", "Db", "Eb", "Fb", "Gb"],
-      accidental: "flat"
+      accidental: "flat",
     },
   },
 };
 
-export default keys;
+export default KEYS;

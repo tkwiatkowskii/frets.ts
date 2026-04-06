@@ -1,9 +1,9 @@
-import type { FretboardDimensionsProps } from "..//types/FreatboardDimensionsProps";
+import type { FretboardDimensionsProps } from "../types/FreatboardDimensionsProps";
 import Frets from "./Frets";
 import Notes from "./Notes";
 import Strings from "./Strings";
 
-export default function Fretboard({
+function Fretboard({
   width, height } 
   : { width: number, height: number }) {
 
@@ -26,3 +26,5 @@ export default function Fretboard({
     </g>
   );
 }
+
+export default Fretboard;

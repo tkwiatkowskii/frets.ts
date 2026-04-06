@@ -1,44 +1,108 @@
-import { useState } from "react";
+import { useContext } from "react";
 import type { FretboardDimensionsProps } from "../types/FreatboardDimensionsProps";
-import type { Tuning } from "../types/Tuning";
-import type { Note } from "../types/Notes";
-import Keys from "../constants/keys";
+import type { Note } from "../../../types/Notes";
+import Keys from "../../../constants/KEYS";
 import calculateEqualTemperamentDistance from "../utils/calculateEqualTemperamentDistance";
+import { TuningContext } from "../../../context/TuningContext";
+import { KeyContext } from "../../../context/key/KeyContext";
+import FrettedNote from "./FrettedNote";
+import OpenNote from "./OpenNote";
 
-const standardTuning : Tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'];
-  // @ts-ignore
-const dropDTuning : Tuning = ['D2', 'A2', 'D3', 'G3', 'B3', 'E4'];
-  // @ts-ignore
-const dropCTuning : Tuning = ['C2', 'G2', 'C3', 'F3', 'A3', 'D4'];
-  // @ts-ignore
-const dropASharpTuning : Tuning = ['A#1', 'F2', 'A#2', 'D#3', 'G3', 'C4'];
 
-export default function Notes(fretboardDimensionProps : FretboardDimensionsProps) {
-  const [chosenTuning, setChosenTuning] = useState<Tuning>(standardTuning);
-  const [chosenKey, setChosenKey] = useState<Note[]>(Keys.minor.Bb?.notes as Note[]);
+function toCanonical(note: Note): Note {
+  const map: Partial<Record<Note, Note>> = {
+    "E#": "F",
+    "B#": "C",
+    "Fb": "E",
+    "Cb": "B",
 
-  const stringCount = chosenTuning.length;
+    "C##": "D",
+    "D##": "E",
+    "E##": "F#",
+    "F##": "G",
+    "G##": "A",
+    "A##": "B",
 
-  const accidentalQuality = Keys.minor.Bb?.accidental as string;
-  const rootNote = Keys.minor.Bb?.notes[0] as Note;
-  // @ts-ignore
+    "Bbb": "A",
+    "Abb": "G",
+    "Gbb": "F",
+    "Fbb": "Eb",
+    "Ebb": "D",
+    "Dbb": "C",
+  };
+
+  // IMPORTANT: fallback must be narrowed manually
+  const result = map[note];
+
+  if (result) return result;
+
+  // safe cast only after validation
+  return note as Note;
+}
+
+/* -----------------------------
+   CHROMATIC (CANONICAL ONLY)
+------------------------------ */
+const CHROMATIC: Note[] = [
+  "C", "C#", "D", "D#", "E", "F",
+  "F#", "G", "G#", "A", "A#", "B",
+];
+
+/* -----------------------------
+   SPELLING SYSTEM (FOR DISPLAY)
+------------------------------ */
+const PITCH_CLASS = [
+  { sharp: "C", flat: "C" },
+  { sharp: "C#", flat: "Db" },
+  { sharp: "D", flat: "D" },
+  { sharp: "D#", flat: "Eb" },
+  { sharp: "E", flat: "E" },
+  { sharp: "F", flat: "F" },
+  { sharp: "F#", flat: "Gb" },
+  { sharp: "G", flat: "G" },
+  { sharp: "G#", flat: "Ab" },
+  { sharp: "A", flat: "A" },
+  { sharp: "A#", flat: "Bb" },
+  { sharp: "B", flat: "B" },
+] as const;
+
+type AccidentalQuality = "sharp" | "flat";
+
+function spell(pc: number, quality: AccidentalQuality): Note {
+  return quality === "flat"
+    ? (PITCH_CLASS[pc].flat as Note)
+    : (PITCH_CLASS[pc].sharp as Note);
+}
+
+/* -----------------------------
+   COMPONENT
+------------------------------ */
+function Notes(fretboardDimensionProps: FretboardDimensionsProps) {
+  const { tuning } = useContext(TuningContext)!;
+  const { rootNote, mode } = useContext(KeyContext)!;
+
   const { startY, startX, endY, endX } = fretboardDimensionProps;
 
+  const safeRoot = toCanonical(rootNote);
+  const keyData = Keys[mode][safeRoot]!;
+
+  const accidentalQuality = keyData.accidental as AccidentalQuality;
+
+  const chosenKey = keyData.notes.map(toCanonical) as Note[];
+
+  const stringCount = tuning.length;
   const scaleLength = endX - startX;
-
-  const NotesInSharpKeys : Note[] = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
-  const NotesInFlatKeys : Note[] = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"];
-
-  let chosenNotes : Note[] = 
-    accidentalQuality === "sharps" || accidentalQuality === "natural" 
-      ? NotesInSharpKeys : NotesInFlatKeys;
-
   const height = endY - startY;
 
-  const notesToRender = chosenTuning.map((note, stringIndex) => {
-    const noteName : Note = note.slice(0, -1) as Note;
-    const octave = parseInt(note.slice(-1));
-    const noteIndex = chosenNotes.indexOf(noteName);
+  /* -----------------------------
+     FRETTED NOTES
+  ------------------------------ */
+  const frettedNotes = tuning.map((openString, stringIndex) => {
+    const rawNote = openString.slice(0, -1) as Note;
+    const octave = parseInt(openString.slice(-1));
+
+    const openPc = toCanonical(rawNote);
+    const noteIndex = CHROMATIC.indexOf(openPc as Note);
 
     const reversedStringIndex = stringCount - 1 - stringIndex;
 
@@ -46,84 +110,73 @@ export default function Notes(fretboardDimensionProps : FretboardDimensionsProps
       startY + (reversedStringIndex * height) / (stringCount - 1);
 
     return Array.from({ length: 12 }, (_, i) => {
-      const n = i + 1;
+      const fret = i + 1;
 
-      const noteAtFret = chosenNotes[(noteIndex + n) % 12] as Note;
-      const octaveAtFret = octave + Math.floor((noteIndex + n) / 12);
+      const pc = (noteIndex + fret) % 12;
+      const noteAtFret = spell(pc, accidentalQuality);
 
-      if (!chosenKey.includes(noteAtFret)) {
-        return null;
-      }
+      const octaveAtFret =
+        octave + Math.floor((noteIndex + fret) / 12);
+
+      const canonicalNote = toCanonical(noteAtFret);
+
+      const isInKey = chosenKey.includes(canonicalNote as Note);
+      if (!isInKey) return null;
 
       const noteWithOctave = `${noteAtFret}${octaveAtFret}`;
 
       const x = calculateEqualTemperamentDistance(
-        n + 0.5 - 1,
+        fret - 0.5,
         startX,
         scaleLength
       );
 
-      const isRoot = noteAtFret === rootNote;
+      const isRoot = canonicalNote === safeRoot;
 
       return (
-        <g key={`${stringIndex}-${n}`} className="frettedNote`">
-          <circle
-            cx={x}
-            cy={y}
-            r={15}
-            fill={isRoot ? "#fdd303" : "white"}
-            stroke="black"
-            strokeWidth="2"
-          />
-          <text
-            x={x}
-            y={y}
-            dy="0.3em"
-            textAnchor="middle"
-            fontSize="13"
-            fill="black"
-          >
-            {noteWithOctave}
-          </text>
-        </g>
-      )
-    })
+        <FrettedNote
+          key={`${stringIndex}-${i}`}
+          x={x}
+          y={y}
+          label={noteWithOctave}
+          isRoot={isRoot}
+        />
+      );
+    });
   });
 
-  const openNotes = chosenTuning.map((note, stringIndex) => {
-    const reversedStringIndex = stringCount - 1 - stringIndex;
+  /* -----------------------------
+     OPEN NOTES
+  ------------------------------ */
+  const openNotes = tuning.map((openString, stringIndex) => {
+  const rawNote = openString.slice(0, -1) as Note;
 
-    const y =
-      startY + (reversedStringIndex * height) / (stringCount - 1);
-    
-    return (
-      <g key={`${note}-${stringIndex}-open`} className="openNote">
-          <circle
-            cx={startX}
-            cy={y}
-            r={15}
-            fill="white"
-            stroke="black"
-            strokeWidth="2"
-          />
-          <text
-            x={startX}
-            y={y}
-            dy="0.3em"
-            textAnchor="middle"
-            fontSize="13"
-            fill="black"
-          >
-            {note}
-          </text>
-        </g>
-    )  
-  });
+  const canonicalOpen = toCanonical(rawNote);
+
+  const isInKey = chosenKey.includes(canonicalOpen);
+  if (!isInKey) return null;
+
+  const reversedStringIndex = stringCount - 1 - stringIndex;
+
+  const y =
+    startY + (reversedStringIndex * height) / (stringCount - 1);
+
+  return (
+    <OpenNote
+      key={stringIndex}
+      x={startX}
+      y={y}
+      label={openString}
+    />
+  );
+});
 
   return (
     <g className="notes">
       {openNotes}
-      {notesToRender}
+      {frettedNotes}
     </g>
-  )
+  );
 }
+
+export default Notes;

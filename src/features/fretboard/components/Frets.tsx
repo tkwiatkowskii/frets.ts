@@ -2,7 +2,7 @@ import type { FretboardDimensionsProps } from
 "../types/FreatboardDimensionsProps";
 import calculateEqualTemperamentDistance from "../utils/calculateEqualTemperamentDistance";
 
-export default function Frets(props: FretboardDimensionsProps) {
+function Frets(props: FretboardDimensionsProps) {
   const { startY, startX, endY, endX } = props;
   const scaleLength = endX - startX;
 
@@ -42,3 +42,5 @@ export default function Frets(props: FretboardDimensionsProps) {
     </g>
   )
 };
+
+export default Frets;
